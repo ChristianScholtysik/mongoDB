@@ -64,15 +64,19 @@ Antworten:
     publishDate: { $lte: 'May' }
     });
 
-11. db.collection.find({
-    "title": 1,
-    "isbn": 1,
-    })
+11. db.getCollection('books').find(
+    {},
+    { title: 1, isbn: 1, \_id: 0 }
+    );
 
-12. db.collection.find({
-    "author.firstName": 1,
-    "author.lastName": 1,
-    })
+12. db.getCollection('books').find(
+    {},
+    {
+    'author.firstName': 1,
+    'author.lastName': 1,
+    \_id: 0
+    }
+    );
 
 13. db.movies.sort({ pages: 1 });
 
@@ -106,17 +110,26 @@ Speichere die Abfragen in einer Textdatei und lade sie in deinem Repository hoch
 
 1. db.getCollection('books').find({
    $and: [
-   { author: 'Charlotte Brontë' },
-   { publicationYear: { $gte: '1840' } }
+   {
+   'author.firstName': 'Jane',
+   'author.lastName': 'Austen'
+   },
+   {
+   'author.firstName': 'Charlotte',
+   'author.lastName': 'Brontë'
+   },
+   { publishDate: { $gte: '1840' } }
    ]
    });
 
-2. {"$and": [
-    { "publishDate": { "$gte": 1924 } },
+2. db.getCollection('books').find({
+   $and: [
+   { publishDate: { $gte: '1924' } },
    {
-   "$or": [
-   { "categories": "Classics" },
-   { "categories": "Romance" }
+   $or: [
+   { categories: 'Classics' },
+   { categories: 'Romance' }
    ]
    }
-   ]}
+   ]
+   });
